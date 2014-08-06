@@ -35,3 +35,33 @@ getOrElse default coordinate grid =
     case get coordinate grid of
         Nothing -> default
         Just a  -> a
+
+getRow : Int -> Grid a -> Maybe [a]
+getRow n grid =
+    if | n < 0                 -> Nothing
+       | n >= grid.size.height -> Nothing
+       | otherwise             -> Just . getRowOrFail n <| grid
+
+getRowOrFail : Int -> Grid a -> [a]
+getRowOrFail n = Array.toList . Array.getOrFail n . .grid
+
+getRowOrElse : [a] -> Int -> Grid a -> [a]
+getRowOrElse default n grid =
+    case getRow n grid of
+        Nothing  -> default
+        Just row -> row
+
+getColumn : Int -> Grid a -> Maybe [a]
+getColumn n grid =
+    if | n < 0                -> Nothing
+       | n >= grid.size.width -> Nothing
+       | otherwise            -> Just . getColumnOrFail n <| grid
+
+getColumnOrFail : Int -> Grid a -> [a]
+getColumnOrFail n = map (Array.getOrFail n) . Array.toList . .grid
+
+getColumnOrElse : [a] -> Int -> Grid a -> [a]
+getColumnOrElse default n grid =
+    case getColumn n grid of
+        Nothing     -> default
+        Just column -> column
