@@ -9,6 +9,9 @@ type Coordinate = { x : Int, y : Int }
 initialize : Size -> a -> Grid a
 initialize ({width, height} as size) a = Grid (Array.repeat height . Array.repeat width <| a) size
 
+toList : Grid a -> [[a]]
+toList = map Array.toList . Array.toList . .grid
+
 set : Coordinate -> a -> Grid a -> Grid a
 set {x, y} a grid =
     if | x < 0 -> grid
