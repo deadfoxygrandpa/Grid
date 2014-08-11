@@ -68,3 +68,12 @@ getColumnOrElse default n grid =
     case getColumn n grid of
         Nothing     -> default
         Just column -> column
+
+inGrid : Coordinate -> Grid a -> Bool
+inGrid {x, y} grid =
+    let {height, width} = grid.size
+    in  if | x < 0       -> False
+           | x >= width  -> False
+           | y < 0       -> False
+           | y >= height -> False
+           | otherwise   -> True
